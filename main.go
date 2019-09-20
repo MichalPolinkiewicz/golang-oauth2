@@ -38,17 +38,14 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
-	//tworzony jest url do serwera autoryzujacego wraz z state
 	url := googleOauthConfig.AuthCodeURL(state)
 
-	//przekierowanie pod auth url
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
 func handleCallback(w http.ResponseWriter, r *http.Request) {
 	//po zalogowaniu serwer autoryzujacy przekierowuje do aplikacji, sprawdzany jest state
 	//jesli jest inny niz przekazany to błąd
-	//checking state - if different than given return error
 	if r.FormValue("state") != state {
 		fmt.Println("state is not valid")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
